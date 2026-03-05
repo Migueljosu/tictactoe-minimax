@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build tictactoe",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-std=c11",
+                "-I",
+                "./src",
+                "-o",
+                "tictactoe.exe",
+                "./src/main.c",
+                "./src/game.c",
+                "./src/minimax.c",
+                "./src/utils.c"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build Tic-Tac-Toe project with GCC"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "del",
+            "args": [
+                "tictactoe.exe"
+            ],
+            "problemMatcher": [],
+            "detail": "Remove executable file"
+        }
+    ]
+}
