@@ -46,7 +46,7 @@ void display_board(Board* board);
 int make_move(Board* board, int row, int col, char player);
 
 /**
- * Checks if the current player has won
+ * Checks if the specified player has won
  * @param board Current game board
  * @param player Player symbol to check ('X' or 'O')
  * @return 1 if player wins, 0 otherwise
