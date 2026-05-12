@@ -1,54 +1,58 @@
-# Compiler and flags
+ifeq ($(OS),Windows_NT)
+CC = C:/msys64/ucrt64/bin/gcc.exe
+PKG_CONFIG = C:/msys64/ucrt64/bin/pkg-config.exe
+else
 CC = gcc
+PKG_CONFIG = pkg-config
+endif
+
 CFLAGS = -Wall -Wextra -std=c11 -g -I./src
+LDFLAGS =
+
 TARGET = tictactoe.exe
 SRCDIR = src
 OBJDIR = obj
 
-# Source files (all .c files in src directory)
-SOURCES = $(wildcard $(SRCDIR)/*.c)
-OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
+SOURCES = $(SRCDIR)/main.c $(SRCDIR)/gtk_ui.c $(SRCDIR)/game.c $(SRCDIR)/minimax.c
+OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
+GTK_FLAGS := $(shell $(PKG_CONFIG) --silence-errors --cflags --libs gtk+-3.0 2>/dev/null)
 
-# Default target
-all: $(TARGET)
+all: check-gtk $(TARGET)
 
-# Create obj directory if it doesn't exist
+check-gtk:
+ifeq ($(strip $(GTK_FLAGS)),)
+	$(error GTK 3 development files not found. Install gtk+-3.0 and make sure pkg-config can resolve it)
+endif
+
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-# Link object files to create executable
-$(TARGET): $(OBJDIR) $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET) $(CFLAGS)
-	@echo "Build successful! Run ./$(TARGET) to start the game"
+$(TARGET): check-gtk $(OBJDIR) $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(TARGET) $(GTK_FLAGS) $(LDFLAGS)
+	@echo "GTK build successful. Run ./$(TARGET)"
 
-# Compile source files into object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(GTK_FLAGS) -c $< -o $@
 
-# Clean build files
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 	@echo "Clean completed"
 
-# Rebuild everything
 rebuild: clean all
 
-# Run the program
 run: $(TARGET)
+ifeq ($(OS),Windows_NT)
+	./run_tictactoe.bat
+else
 	./$(TARGET)
+endif
 
-# Memory leak check (if valgrind is available)
-valgrind: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=all ./$(TARGET)
-
-# Help target
 help:
 	@echo "Available targets:"
-	@echo "  all      - Build the project (default)"
-	@echo "  clean    - Remove build files"
-	@echo "  rebuild  - Clean and rebuild"
-	@echo "  run      - Build and run the program"
-	@echo "  valgrind - Check for memory leaks (requires valgrind)"
-	@echo "  help     - Show this help message"
+	@echo "  all     - Build the GTK interface"
+	@echo "  run     - Build and run the GTK interface"
+	@echo "  clean   - Remove build artifacts"
+	@echo "  rebuild - Clean and rebuild the GTK interface"
+	@echo "  help    - Show this help message"
 
-.PHONY: all clean rebuild run valgrind help
+.PHONY: all check-gtk clean rebuild run help

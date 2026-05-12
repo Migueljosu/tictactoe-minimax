@@ -235,3 +235,15 @@ void clear_board(Board* board) {
         }
     }
 }
+
+char get_cell(const Board* board, int row, int col) {
+    if (board == NULL || board->matrix == NULL) {
+        return ' ';
+    }
+
+    if (row < 0 || row >= board->size || col < 0 || col >= board->size) {
+        return ' ';
+    }
+
+    return board->matrix[row][col];
+}

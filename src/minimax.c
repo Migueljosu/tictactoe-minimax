@@ -14,7 +14,7 @@
  * @param board Current game board
  * @param computer Computer symbol
  * @param human Human symbol
- * @return +10 if computer wins, -10 if human wins, 0 otherwise
+ * @return +10 if a computer wins, -10 if a human wins, 0 otherwise
  */
 int evaluate_board(Board* board, char computer, char human) {
     if (check_win(board, computer)) {
@@ -28,7 +28,7 @@ int evaluate_board(Board* board, char computer, char human) {
 /**
  * Minimax algorithm implementation
  * @param board Current game board
- * @param is_maximizing True if current player is computer (maximizing)
+ * @param is_maximizing True if the current player is computer (maximizing)
  * @param computer Computer symbol
  * @param human Human symbol
  * @return Score for current board state

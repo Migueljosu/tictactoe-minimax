@@ -66,4 +66,13 @@ int is_board_full(Board* board);
  */
 void clear_board(Board* board);
 
+/**
+ * Returns the symbol stored in a cell
+ * @param board Current game board
+ * @param row Row index (0-2)
+ * @param col Column index (0-2)
+ * @return Cell contents or space if position is invalid
+ */
+char get_cell(const Board* board, int row, int col);
+
 #endif
