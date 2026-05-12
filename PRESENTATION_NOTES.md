@@ -4,7 +4,7 @@
 
 This project is a Tic-Tac-Toe desktop application written in C using GTK 3. It supports two modes: human versus human and human versus computer. The AI is based on the Minimax algorithm, which allows it to choose the best possible move.
 
-## What I Built
+## What Built
 
 - a graphical interface in C using GTK
 - a complete Tic-Tac-Toe game engine
